@@ -5,3 +5,9 @@ use serde::{Deserialize, Serialize};
 pub struct Config {
     pub backups: Vec<Backup>,
 }
+
+impl Config {
+    pub fn add_backup(&mut self, backup: Backup) {
+        self.backups.push(backup);
+    }
+}
