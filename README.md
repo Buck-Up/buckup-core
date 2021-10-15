@@ -1,3 +1,3 @@
-# strongbox-core
+# smartsync-core
 
-Core Rust library for Strongbox backup system
+Core Rust library for Smart Sync backup system

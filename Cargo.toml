@@ -1,5 +1,5 @@
 [package]
-name = "strongbox-core"
+name = "smartsync-core"
 version = "0.1.0"
 edition = "2018"
 
