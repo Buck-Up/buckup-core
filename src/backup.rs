@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use std::{fmt, path::PathBuf};
+use std::{fmt, path::{Path, PathBuf}};
 
 #[derive(Debug, Default, Serialize, Deserialize)]
 pub struct Backup {
@@ -30,7 +30,7 @@ impl Backup {
     }
 }
 
-fn pathbuf_to_str(p: &PathBuf) -> String {
+fn pathbuf_to_str(p: &Path) -> String {
     match p.to_str() {
         Some(s) => s.to_string(),
         None => format!("{:?}", p),
