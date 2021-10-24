@@ -1,5 +1,8 @@
 use serde::{Deserialize, Serialize};
-use std::{fmt, path::{Path, PathBuf}};
+use std::{
+    fmt,
+    path::{Path, PathBuf},
+};
 
 #[derive(Debug, Default, Serialize, Deserialize)]
 pub struct Backup {
