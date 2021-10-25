@@ -1,7 +1,6 @@
 use crate::Backup;
 use serde::{Deserialize, Serialize};
 use std::{
-    env,
     error::Error,
     fs,
     path::{Path, PathBuf},
@@ -18,7 +17,6 @@ impl Config {
     pub fn add_backup(&mut self, backup: Backup) {
         self.backups.push(backup);
     }
-
 }
 
 pub fn initialize_config() -> Result<(), Box<dyn Error>> {
@@ -49,6 +47,6 @@ pub fn save_config(config: &Config) -> Result<(), Box<dyn Error>> {
 }
 
 fn config_path() -> PathBuf {
-    let home_dir = env::var("HOME").unwrap();
+    let home_dir = dirs::home_dir().expect("failed to determine home directory");
     Path::new(&home_dir).join(CONFIG_FILENAME)
 }
