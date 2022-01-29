@@ -20,6 +20,17 @@ impl Backup {
         }
     }
 
+    /// add `source` path to backup
+    ///
+    /// ## Example
+    ///
+    /// ```
+    /// use smartsync_core::Backup;
+    /// use std::path::Path;
+    ///
+    /// let mut backup = Backup::new("foo".to_string(), Path::new("foo").to_path_buf());
+    /// backup.add_source(Path::new("bar").to_path_buf());
+    /// ```
     pub fn add_source(&mut self, source: PathBuf) {
         self.sources.push(source);
     }

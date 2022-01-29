@@ -14,6 +14,18 @@ pub struct Config {
 }
 
 impl Config {
+    /// add `backup` to config
+    ///
+    /// ## Example
+    ///
+    /// ```
+    /// use smartsync_core::{Backup, Config};
+    /// use std::path::Path;
+    ///
+    /// let mut config = Config::default();
+    /// let backup = Backup::new("foo".to_string(), Path::new("foo").to_path_buf());
+    /// config.add_backup(backup);
+    /// ```
     pub fn add_backup(&mut self, backup: Backup) {
         self.backups.push(backup);
     }
