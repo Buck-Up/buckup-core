@@ -1,4 +1,4 @@
-use crate::Backup;
+use crate::DeviceConfig;
 use serde::{Deserialize, Serialize};
 use std::{
     error::Error,
@@ -6,42 +6,41 @@ use std::{
     path::{Path, PathBuf},
 };
 
-const CONFIG_FILENAME: &str = ".strongbox.toml";
+const CONFIG_FILENAME: &str = "smartsync.toml";
 
 #[derive(Debug, Default, Serialize, Deserialize)]
 pub struct Config {
-    pub backups: Vec<Backup>,
+    pub devices: Vec<DeviceConfig>,
 }
 
 impl Config {
-    /// add `backup` to config
+    /// add `device` to config
     ///
     /// ## Example
     ///
     /// ```
-    /// use smartsync_core::{Backup, Config};
-    /// use std::path::Path;
+    /// use smartsync_core::{Config, DeviceConfig};
     ///
     /// let mut config = Config::default();
-    /// let backup = Backup::new("foo".to_string(), Path::new("foo").to_path_buf());
-    /// config.add_backup(backup);
+    /// let device = DeviceConfig::default();
+    /// config.add_device(device);
     /// ```
-    pub fn add_backup(&mut self, backup: Backup) {
-        self.backups.push(backup);
+    pub fn add_device(&mut self, device: DeviceConfig) {
+        self.devices.push(device);
     }
 }
 
-pub fn initialize_config() -> Result<(), Box<dyn Error>> {
-    let config = load_config()?;
-    save_config(&config)?;
+pub fn initialize_config(directory: &Path) -> Result<(), Box<dyn Error>> {
+    let config = load_config(directory)?;
+    save_config(&config, directory)?;
     let contents = toml::to_string_pretty(&config)?;
-    println!("config initialized at {:?}", config_path());
+    println!("config initialized at {:?}", config_path(directory));
     println!("{}", contents);
     Ok(())
 }
 
-pub fn load_config() -> Result<Config, Box<dyn Error>> {
-    let f = config_path();
+pub fn load_config(directory: &Path) -> Result<Config, Box<dyn Error>> {
+    let f = config_path(directory);
     if f.exists() {
         let contents = fs::read_to_string(f)?;
         let config = toml::from_str(&contents)?;
@@ -51,14 +50,13 @@ pub fn load_config() -> Result<Config, Box<dyn Error>> {
     }
 }
 
-pub fn save_config(config: &Config) -> Result<(), Box<dyn Error>> {
-    let f = config_path();
+pub fn save_config(config: &Config, directory: &Path) -> Result<(), Box<dyn Error>> {
+    let f = config_path(directory);
     let contents = toml::to_string_pretty(config)?;
     fs::write(f, contents)?;
     Ok(())
 }
 
-fn config_path() -> PathBuf {
-    let home_dir = dirs::home_dir().expect("failed to determine home directory");
-    Path::new(&home_dir).join(CONFIG_FILENAME)
+fn config_path(directory: &Path) -> PathBuf {
+    directory.join(CONFIG_FILENAME)
 }
