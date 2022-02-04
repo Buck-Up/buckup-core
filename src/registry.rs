@@ -1,4 +1,4 @@
-use crate::util::pathbuf_to_str;
+use crate::Backup;
 use serde::{Deserialize, Serialize};
 use std::{
     error::Error,
@@ -10,7 +10,7 @@ const REGISTRY_FILENAME: &str = ".smartsync.toml";
 
 #[derive(Debug, Default, Serialize, Deserialize)]
 pub struct Registry {
-    pub backups: Vec<PathBuf>,
+    pub backups: Vec<Backup>,
 }
 
 impl Registry {
@@ -19,18 +19,15 @@ impl Registry {
     /// ## Example
     ///
     /// ```
-    /// use smartsync_core::Registry;
+    /// use smartsync_core::{Backup, Registry};
     /// use std::path::Path;
     ///
     /// let mut registry = Registry::default();
-    /// registry.add_backup(Path::new("foo").to_path_buf());
+    /// let backup = Backup::new("foo".to_owned(), Path::new("foo").to_path_buf());
+    /// registry.add_backup(backup);
     /// ```
-    pub fn add_backup(&mut self, backup: PathBuf) {
+    pub fn add_backup(&mut self, backup: Backup) {
         self.backups.push(backup);
-    }
-
-    pub fn backups_str(&self) -> Vec<String> {
-        self.backups.iter().map(|s| pathbuf_to_str(s)).collect()
     }
 }
 
@@ -39,11 +36,8 @@ impl fmt::Display for Registry {
         let backups = self
             .backups
             .iter()
-            .map(|b| {
-                let offline = if b.exists() { "" } else { " (offline)" };
-                format!("{}{}", pathbuf_to_str(b), offline)
-            })
-            .collect::<Vec<String>>()
+            .map(|b| format!("{}", b))
+            .collect::<Vec<_>>()
             .join("\n");
         write!(f, "{}", backups)
     }
