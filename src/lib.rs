@@ -3,6 +3,7 @@ pub mod config;
 pub mod device_config;
 pub mod file_sync;
 pub mod registry;
+pub mod runner;
 pub(crate) mod util;
 
 pub use backup::Backup;
