@@ -12,7 +12,7 @@ pub fn run_backup(
             println!("dest path {} is not a directory", pathbuf_to_str(&dest_dir));
             continue;
         }
-        if !dest_dir.exists() && !dry_run {
+        if !dest_dir.is_dir() && !dry_run {
             fs::create_dir(&dest_dir)?;
         }
         for source_dir in &sync.sources {
@@ -38,11 +38,19 @@ fn copy_files(source_dir: &Path, dest_dir: &Path, dry_run: bool) -> Result<(), B
         let source_path = entry.path();
         let dest_path = dest_dir.join(entry.file_name());
         if source_path.is_dir() {
-            if !dry_run {
+            if dest_path.exists() && !dest_path.is_dir() {
+                println!(
+                    "dest path {} is not a directory",
+                    pathbuf_to_str(&dest_path)
+                );
+                continue;
+            }
+            if !dest_path.is_dir() && !dry_run {
                 fs::create_dir(&dest_path)?;
             }
             copy_files(&source_path, &dest_path, dry_run)?;
         } else if dest_path.exists() && !dest_path.is_dir() {
+            // already backed up
             continue;
         } else {
             println!(
