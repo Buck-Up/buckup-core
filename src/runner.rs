@@ -1,4 +1,6 @@
-use crate::{util::pathbuf_to_str, DeviceConfig};
+use chrono::Utc;
+
+use crate::{config, util::pathbuf_to_str, DeviceConfig};
 use std::{error::Error, fs, path::Path};
 
 pub fn run_backup(
@@ -28,6 +30,15 @@ pub fn run_backup(
             }
         }
     }
+
+    let mut config = config::load_config(backup_path)?;
+    for d in &mut config.devices {
+        if d.name == device_config.name {
+            d.last_backup = Some(Utc::now());
+            break;
+        }
+    }
+    config::save_config(&config, backup_path)?;
 
     Ok(())
 }
