@@ -6,8 +6,8 @@ use std::fmt;
 #[derive(Debug, Default, Serialize, Deserialize)]
 pub struct DeviceConfig {
     pub name: String,
-    pub files: Vec<FileSync>,
     pub last_backup: Option<DateTime<Utc>>,
+    pub files: Vec<FileSync>,
 }
 
 impl DeviceConfig {
@@ -50,10 +50,9 @@ impl fmt::Display for DeviceConfig {
         };
         let descriptions = vec![
             format!("Device: {}", self.name),
+            format!("Last backup: {}", last_backup),
             String::new(),
             files,
-            String::new(),
-            format!("Last backup: {}", last_backup),
         ]
         .join("\n");
         write!(f, "{}", descriptions)
