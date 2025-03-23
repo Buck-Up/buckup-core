@@ -8,7 +8,12 @@ default location: `~/.smartsync.toml`
 // contents of per-device backup registry
 // location of backups (e.g. folder on external drive)
 struct Registry {
-    backups: Vec<PathBuf>,
+    backups: Vec<Backup>,
+}
+
+struct Backup {
+    pub name: String,
+    pub path: PathBuf,
 }
 ```
 
@@ -19,7 +24,7 @@ a backup, etc.
 
 ## backup location configuration
 
-default location: `/path/to/location/startsync.toml`
+default location: `/path/to/location/smartsync.toml`
 
 (e.g. on an external drive)
 
@@ -34,8 +39,8 @@ struct Config {
 // information about a backup device (e.g. Linux Laptop, Macbook)
 struct DeviceConfig {
     name: String,
-    backups: Vec<FileSync>,
-    last_backup: chrono::Utc,
+    last_backup: Option<DateTime<Utc>>,
+    files: Vec<FileSync>,
 }
 
 // an individual entry for backing up file(s)/folder(s) (e.g. Pictures)
