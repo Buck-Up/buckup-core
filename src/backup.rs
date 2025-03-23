@@ -22,6 +22,6 @@ impl fmt::Display for Backup {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let offline = if self.path.exists() { "" } else { " (offline)" };
         let path = format!("{}{}", self.path_str(), offline);
-        write!(f, "{}\n{}", format!("Backup: {}", self.name), path)
+        write!(f, "Backup: {}\n{}", self.name, path)
     }
 }

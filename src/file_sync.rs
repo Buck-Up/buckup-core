@@ -50,7 +50,7 @@ impl fmt::Display for FileSync {
             .map(|s| format!("- {}", s))
             .collect::<Vec<String>>()
             .join("\n");
-        let descriptions = vec![
+        let descriptions = [
             format!("Name: {}", self.name),
             format!("Sources:\n{}", sources),
             format!("Dest: {}", self.dest_str()),

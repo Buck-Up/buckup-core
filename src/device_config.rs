@@ -48,7 +48,7 @@ impl fmt::Display for DeviceConfig {
         } else {
             "N/A".to_string()
         };
-        let descriptions = vec![
+        let descriptions = [
             format!("Device: {}", self.name),
             format!("Last backup: {}", last_backup),
             String::new(),
