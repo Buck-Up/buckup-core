@@ -1,3 +1,3 @@
-# smartsync-core
+# buckup-core
 
-Core Rust library for Smart Sync backup system
+Core Rust library for Buck Up backup system

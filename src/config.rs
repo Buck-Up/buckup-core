@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::error::BackupError;
 
-const CONFIG_FILENAME: &str = ".smartsync.toml";
+const CONFIG_FILENAME: &str = ".buckup.toml";
 
 #[derive(Debug, Default, Serialize, Deserialize)]
 pub struct Config {
